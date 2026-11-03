@@ -22,14 +22,18 @@ List<CallTask> buildSyntheticCallTasks(DateTime today) {
     String name,
     DateTime dob,
     String content,
-  ) => PatientAppointment(
-    appointmentId: ++appointmentId,
-    stt: stt,
-    medicalCode: 'YT${stt.toString().padLeft(6, '0')}',
-    name: name,
-    dob: dob,
-    content: content,
-  );
+  ) {
+    // Medical codes are unique across days, like in the database.
+    final id = ++appointmentId;
+    return PatientAppointment(
+      appointmentId: id,
+      stt: stt,
+      medicalCode: 'YT${id.toString().padLeft(6, '0')}',
+      name: name,
+      dob: dob,
+      content: content,
+    );
+  }
 
   return [
     // Three siblings sharing one phone; the youngest is under one year.

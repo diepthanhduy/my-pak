@@ -15,11 +15,14 @@ import 'widgets/progress_summary.dart';
 import 'widgets/status_filter_bar.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, this.initialDate});
+
+  /// Day to open on, e.g. right after an import; today when null.
+  final DateTime? initialDate;
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<HomeBloc>()..add(const HomeStarted()),
+    create: (_) => getIt<HomeBloc>()..add(HomeStarted(date: initialDate)),
     child: HomeView(phoneLauncher: getIt<PhoneLauncher>()),
   );
 }

@@ -9,8 +9,7 @@ import '../../domain/entities/contact_summary.dart';
 import '../../domain/repositories/call_task_repository.dart';
 import 'synthetic_call_tasks.dart';
 
-/// Development-only repository seeded with synthetic data.
-/// To be replaced by the drift implementation.
+/// Development-only repository seeded with synthetic data (`ENV=dev`).
 @LazySingleton(as: CallTaskRepository, env: [Environment.dev])
 class InMemoryCallTaskRepository implements CallTaskRepository {
   InMemoryCallTaskRepository(Clock clock)

@@ -108,15 +108,14 @@ Review screen → drift (Patient, Appointment, CallTask, ImportBatch)
 - Extractor responsibilities only: open file, iterate pages, convert coordinates, emit fragments. No business rules.
 - Parser responsibilities: everything in §3–§5. Deterministic, no I/O.
 
-### pdfrx API notes (2.10)
+### pdfrx API notes (verified against pdfrx 2.11.0 / pdfrx_engine 0.9.0)
 
-> **To verify after `./scripts/setup.sh`** — written from the prompt spec, not yet checked against the installed package.
-
-- `PdfDocument.openFile(path)` → document; iterate `document.pages`.
-- `page.loadStructuredText()` → `PdfPageText` with `fragments`; each fragment has `text`, `bounds` (`PdfRect`) and `charRects`.
-- `PdfRect`: origin bottom-left, y up, `top > bottom`.
-- Fragments may split a single cell into several pieces or merge neighbouring words; if a fragment spans two columns, split it using `charRects`.
-- Dispose the document after extraction.
+- Call `pdfrxFlutterInitialize()` once at startup (`main.dart`): documents are opened before any pdfrx widget is built.
+- `PdfDocument.openFile(path)` → document; iterate `document.pages`; `await document.dispose()` afterwards.
+- `page.loadStructuredText(ensureLoaded: true)` (extension method) → `PdfPageText` with `fragments`; each fragment has `text`, `bounds` (`PdfRect`), `charRects` (one per UTF-16 unit) and `direction`. pdfrx already reorders text heuristically — we still group by coordinates.
+- `PdfRect`: origin bottom-left, y up, `top > bottom`. `page.width` / `page.height` are the rotated size; rotated pages (`page.rotation != PdfPageRotation.none`) are skipped by the extractor.
+- The extractor splits a fragment wherever two characters are a cell gap apart (`isCellGap`); the parser merges neighbouring pieces closer than that back into one cell.
+- Debug builds log counts only (`rows`, `expected`, `phoneGroups`, warnings by type) under the `import` log name — never names or phones.
 
 ## 7. Test scenarios (synthetic fixtures)
 

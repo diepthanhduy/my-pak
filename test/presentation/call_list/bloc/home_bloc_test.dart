@@ -120,6 +120,24 @@ void main() {
     );
 
     blocTest<HomeBloc, HomeState>(
+      'opens on the given date, e.g. right after an import',
+      build: buildBloc,
+      act: (bloc) => bloc.add(HomeStarted(date: DateTime(2026, 11, 3, 14))),
+      expect: () => [
+        HomeState(today: today, selectedDate: tomorrow),
+        HomeState(today: today, selectedDate: tomorrow, maxAttempts: 5),
+        HomeState(
+          today: today,
+          selectedDate: tomorrow,
+          tasks: tomorrowTasks,
+          status: HomeStatus.success,
+          maxAttempts: 5,
+        ),
+      ],
+      verify: (_) => verify(() => watchCallTasks(tomorrow)).called(1),
+    );
+
+    blocTest<HomeBloc, HomeState>(
       'emits failure when the stream errors',
       setUp: () => when(
         () => watchCallTasks(any()),

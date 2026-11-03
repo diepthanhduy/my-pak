@@ -6,6 +6,10 @@ const defaultSmsTemplate =
 
 const defaultMaxAttempts = 3;
 
+/// Empty until set in Settings or detected from an imported PDF header.
+const defaultClinicName = '';
+const defaultClinicPhone = '';
+
 final class ReminderSettings extends Equatable {
   const ReminderSettings({
     required this.smsTemplate,

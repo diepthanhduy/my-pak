@@ -62,6 +62,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeEffect> get effects => _effects.stream;
 
   Future<void> _onStarted(HomeEvent event, Emitter<HomeState> emit) async {
+    if (event case HomeStarted(:final date?)) {
+      emit(state.copyWith(selectedDate: dateOnly(date)));
+    }
     // Bloc always forwards its first emit, so skip a no-op loading emit.
     if (state.status != HomeStatus.loading) {
       emit(state.copyWith(status: HomeStatus.loading));

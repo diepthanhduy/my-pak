@@ -8,7 +8,13 @@ sealed class HomeEvent extends Equatable {
 }
 
 final class HomeStarted extends HomeEvent {
-  const HomeStarted();
+  const HomeStarted({this.date});
+
+  /// Day to open on; today when null.
+  final DateTime? date;
+
+  @override
+  List<Object?> get props => [date];
 }
 
 final class HomeRetryPressed extends HomeEvent {

@@ -4,7 +4,7 @@ import '../../domain/entities/reminder_settings.dart';
 import '../../domain/repositories/settings_repository.dart';
 
 /// Development-only settings with placeholder clinic info.
-/// To be replaced by persisted settings (see open question Q2).
+/// `ENV=dev` only; prod uses `DriftSettingsRepository`.
 @LazySingleton(as: SettingsRepository, env: [Environment.dev])
 class InMemorySettingsRepository implements SettingsRepository {
   @override

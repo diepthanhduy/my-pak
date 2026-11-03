@@ -11,6 +11,9 @@ enum ContactResult {
   rescheduled,
 }
 
+/// Where an attempt's outcome came from.
+enum ContactSource { manual, callLog, callKit }
+
 /// Latest contact attempt of a call task, enough to render "No answer · 14:32".
 final class ContactSummary extends Equatable {
   const ContactSummary({required this.channel, required this.at, this.result});
